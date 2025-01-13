@@ -1,0 +1,8 @@
+.body {
+  color: var(--dark);
+}
+
+.body :global(.cell):first-child {
+  min-height: 64px;
+  padding-left: 15px;
+}

@@ -1,0 +1,32 @@
+.container {
+  background-color: var(--primary-4);
+  min-height: 100vh;
+}
+
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.content {
+  padding: 60px 20px 120px;
+}
+
+.button {
+  position: fixed;
+  right: 48px;
+  bottom: 48px;
+  z-index: 8;
+}
+
+.layout-background {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 9;
+  background-color: var(--neutral-1);
+  opacity: 0.4;
+}

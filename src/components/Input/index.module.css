@@ -1,0 +1,35 @@
+.container {
+  display: block;
+  width: 100%;
+}
+
+.label {
+  display: block;
+  margin-bottom: 5px;
+  font-size: 0.8rem;
+  color: var(--neutral-3);
+  font-weight: 500;
+}
+
+.input {
+  height: 44px;
+  border-radius: var(--border-radius);
+  border: 1px solid #cbcbcb;
+  padding: 12px;
+  display: block;
+  width: 100%;
+  font-size: 0.9rem;
+}
+
+.input-error {
+  border-color: var(--error);
+}
+
+.input-container {
+  position: relative;
+  display: block;
+}
+
+.input-dropdown-component {
+  padding-right: 100px;
+}

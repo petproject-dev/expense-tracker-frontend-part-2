@@ -1,0 +1,7 @@
+.container {
+  display: block;
+  margin-bottom: 12px;
+  font-size: 0.8rem;
+  color: var(--neutral-3);
+  font-weight: 500;
+}

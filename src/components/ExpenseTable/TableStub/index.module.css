@@ -1,0 +1,52 @@
+.stub-line {
+  height: 23px;
+  width: 100%;
+}
+
+.stub-line,
+.stub-square {
+  background-color: var(--neutral-6);
+  border-radius: 12px;
+  animation: shine 1s ease infinite;
+}
+
+.stub-square {
+  width: 49px;
+  height: 49px;
+  margin-right: 15px;
+}
+
+.cell1 {
+  display: flex;
+  align-items: center;
+}
+
+.cell1 .stub-line {
+  max-width: 190px;
+}
+
+.cell2 .stub-line {
+  max-width: 145px;
+}
+
+.cell3 .stub-line {
+  max-width: 110px;
+}
+
+.cell4 .stub-line {
+  max-width: 75px;
+}
+
+@keyframes shine {
+  0% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.6;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
