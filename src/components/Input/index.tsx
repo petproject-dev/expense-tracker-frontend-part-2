@@ -5,7 +5,6 @@ import { HelperText } from '../HelperText';
 import styles from './index.module.css';
 
 export interface IProps extends InputHTMLAttributes<HTMLInputElement> {
-  defaultValue?: string | number;
   error?: boolean;
   helperText?: string;
   className?: string;

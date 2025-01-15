@@ -17,7 +17,9 @@
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",
+    "axios": "^1.7.9",
     "classnames": "^2.5.1",
+    "date-fns": "^4.1.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-hook-form": "^7.54.2",

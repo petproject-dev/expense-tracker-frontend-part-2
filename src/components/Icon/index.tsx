@@ -3,24 +3,10 @@ import { FC, HTMLAttributes } from 'react';
 
 import svgSrc from './assets/sprite.svg';
 import styles from './index.module.css';
+import { Icon as IconType } from '../../types';
 
 export interface IProps extends HTMLAttributes<HTMLElement> {
-  icon:
-    | 'mobile'
-    | 'credits'
-    | 'other_payments'
-    | 'hobby'
-    | 'subscriptions'
-    | 'transport'
-    | 'restaurants'
-    | 'utility'
-    | 'online_shopping'
-    | 'debts'
-    | 'plus'
-    | 'close'
-    | 'calendar'
-    | 'menu'
-    | 'loader';
+  icon: IconType;
   size?: number;
   color?: 'grey' | 'white';
 }

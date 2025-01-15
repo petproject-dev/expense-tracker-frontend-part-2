@@ -21,3 +21,9 @@
 .body {
   min-height: calc(100vh - 300px);
 }
+
+@media (width <= 768px) {
+  .head {
+    display: none;
+  }
+}

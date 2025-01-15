@@ -6,3 +6,9 @@
   min-height: 64px;
   padding-left: 15px;
 }
+
+@media (width <= 768px) {
+  .body :global(.cell):first-child {
+    padding-left: 0;
+  }
+}

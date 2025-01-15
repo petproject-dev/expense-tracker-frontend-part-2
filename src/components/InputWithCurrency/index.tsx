@@ -9,18 +9,18 @@ interface IProps extends InputProps {
   selectProps?: IDropdownProps;
 }
 
-const Dropdown: FC<IDropdownProps> = ({ defaultValue, ...props }) => {
+const Dropdown: FC<IDropdownProps> = ({ defaultValue, onChange, ...props }) => {
   const [value, setValue] = useState(defaultValue);
 
   const handleChangeCurrency = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setValue(e.target.value);
-    if (props.onChange) {
-      props.onChange(e);
+    if (onChange) {
+      onChange(e);
     }
   };
 
   return (
-    <select className={styles.select} value={value} onChange={handleChangeCurrency}>
+    <select className={styles.select} value={value} onChange={handleChangeCurrency} {...props}>
       <option>USD</option>
       <option>EUR</option>
     </select>

@@ -1,6 +1,6 @@
-import { IconType } from '../Icon/index.types';
+import { Category, Currency } from './types';
 
-export const categoryIcons: IconType[] = [
+export const categoryList: Category[] = [
   'mobile',
   'credits',
   'other_payments',
@@ -12,3 +12,5 @@ export const categoryIcons: IconType[] = [
   'online_shopping',
   'debts',
 ];
+
+export const currencyList: Currency[] = ['USD', 'EUR'];

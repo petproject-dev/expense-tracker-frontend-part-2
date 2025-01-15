@@ -1,8 +1,11 @@
 import { yupResolver } from '@hookform/resolvers/yup';
+import { format, formatISO, startOfDay } from 'date-fns';
 import { FC } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import * as yup from 'yup';
 
+import { categoryList, currencyList } from '../../entities';
+import { useStore } from '../../store/storeContext';
 import { Button } from '../Button';
 import { CategoryGroup } from '../CategoryGroup';
 import { DatePicker } from '../DatePicker';
@@ -12,19 +15,16 @@ import { Input } from '../Input';
 import { InputLabel } from '../InputLabel';
 import { InputWithCurrency } from '../InputWithCurrency';
 import styles from './index.module.css';
+import { Expense } from '../../types';
 
-type Inputs = {
-  name: string;
-  amount: number;
-  category: string;
-  date: string;
-};
+interface Inputs extends Omit<Expense, 'id'> {}
 
 const schema = yup
   .object({
     name: yup.string().required(),
     amount: yup.number().positive().integer().required(),
-    category: yup.string().required(),
+    category: yup.string().oneOf(categoryList).required(),
+    currency: yup.string().oneOf(currencyList).required(),
     date: yup.string().required(),
   })
   .required();
@@ -38,20 +38,28 @@ const emptyData = {
   name: undefined,
   amount: undefined,
   category: undefined,
-  date: undefined,
+  currency: undefined,
+  date: format(new Date(), 'yyyy-MM-dd'),
 };
 
 export const ExpenseForm: FC<IProps> = ({ onClose, defaultValues = emptyData }) => {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<Inputs>({
     defaultValues,
     resolver: yupResolver(schema),
   });
 
-  const onSubmit: SubmitHandler<Inputs> = (data) => console.log({ errors, data });
+  const { createExpense } = useStore();
+
+  const onSubmit: SubmitHandler<Inputs> = (data) => {
+    createExpense({ ...data, date: formatISO(startOfDay(new Date(data.date))) });
+    reset();
+    onClose();
+  };
 
   return (
     <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
@@ -73,6 +81,7 @@ export const ExpenseForm: FC<IProps> = ({ onClose, defaultValues = emptyData }) 
             defaultValue={0}
             error={!!errors.amount}
             helperText={errors?.amount?.message}
+            selectProps={register('currency')}
           />
         </div>
         <div className={styles.field}>
@@ -99,7 +108,7 @@ export const ExpenseForm: FC<IProps> = ({ onClose, defaultValues = emptyData }) 
             <Icon icon="close" color="white" size={12} />
           </IconButton>
         </div>
-        <Button>Create</Button>
+        <Button type="submit">Create</Button>
       </div>
     </form>
   );

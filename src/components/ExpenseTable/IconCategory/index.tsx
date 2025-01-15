@@ -1,8 +1,8 @@
 import { FC } from 'react';
 
 import styles from './index.module.css';
+import { Icon as IconType } from '../../../types';
 import { Icon } from '../../Icon';
-import { IconType } from '../../Icon/index.types';
 
 interface IProps {
   category: IconType;

@@ -1,37 +1,33 @@
-import { FC } from 'react';
+import { useCallback, useRef } from 'react';
 
 import styles from './index.module.css';
 import { Table, TableBody, TableCell, TableHead, TableRow } from '../Table';
 import { EmptyTable } from './EmptyTable';
 import { ExpenseTableRow } from './ExpenseTableRow';
 import { TableStub } from './TableStub';
+import { useStore } from '../../store/storeContext';
 import { Loader } from '../Loader';
 
-interface IProps {}
+export const ExpenseTable = () => {
+  const { expenses: data, isLoading, setPage, hasMoreExpenses } = useStore();
+  const observer = useRef<IntersectionObserver | null>(null);
 
-export const ExpenseTable: FC<IProps> = () => {
-  const isLoading = false;
-  const data = [
-    { id: 1, name: 'John Doe', category: 'hobby1', date: '2024-12-31', total: '-7.22$' },
-    { id: 2, name: 'John Doe2', category: 'mobile', date: '2024-12-31', total: '+7.22$' },
-    { id: 3, name: 'John Doe2', category: 'mobile', date: '2024-12-31', total: '+7.22$' },
-    { id: 4, name: 'John Doe2', category: 'mobile', date: '2024-12-31', total: '+7.22$' },
-    { id: 5, name: 'John Doe2', category: 'mobile', date: '2024-12-31', total: '+7.22$' },
-    { id: 6, name: 'John Doe2', category: 'mobile', date: '2024-12-31', total: '+7.22$' },
-    { id: 7, name: 'John Doe2', category: 'mobile', date: '2024-12-31', total: '+7.22$' },
-    { id: 8, name: 'John Doe2', category: 'mobile', date: '2024-12-31', total: '+7.22$' },
-    { id: 9, name: 'John Doe2', category: 'mobile', date: '2024-12-31', total: '+7.22$' },
-    { id: 10, name: 'John Doe2', category: 'mobile', date: '2024-12-31', total: '+7.22$' },
-    { id: 11, name: 'John Doe2', category: 'mobile', date: '2024-12-31', total: '+7.22$' },
-    { id: 12, name: 'John Doe2', category: 'mobile', date: '2024-12-31', total: '+7.22$' },
-    { id: 13, name: 'John Doe2', category: 'mobile', date: '2024-12-31', total: '+7.22$' },
-    { id: 14, name: 'John Doe2', category: 'mobile', date: '2024-12-31', total: '+7.22$' },
-    { id: 15, name: 'John Doe2', category: 'mobile', date: '2024-12-31', total: '+7.22$' },
-    { id: 16, name: 'John Doe2', category: 'mobile', date: '2024-12-31', total: '+7.22$' },
-    { id: 17, name: 'John Doe2', category: 'mobile', date: '2024-12-31', total: '+7.22$' },
-    { id: 18, name: 'John Doe2', category: 'mobile', date: '2024-12-31', total: '+7.22$' },
-    { id: 19, name: 'John Doe2', category: 'mobile', date: '2024-12-31', total: '+7.22$' },
-  ];
+  const lastExpenseElementRef = useCallback(
+    (node: HTMLTableRowElement | null) => {
+      if (isLoading || !hasMoreExpenses) return;
+
+      if (observer.current) observer.current.disconnect();
+
+      observer.current = new IntersectionObserver((entries) => {
+        if (entries[0].isIntersecting && hasMoreExpenses) {
+          setPage((prevPage) => prevPage + 1);
+        }
+      });
+
+      if (node) observer.current.observe(node);
+    },
+    [isLoading, hasMoreExpenses, setPage],
+  );
 
   const renderBody = () => {
     if (isLoading && data.length === 0) {
@@ -42,14 +38,20 @@ export const ExpenseTable: FC<IProps> = () => {
       return <EmptyTable />;
     }
 
-    return data.map((row) => {
-      return <ExpenseTableRow key={row.id} data={row} />;
+    return data.map((row, index) => {
+      return (
+        <ExpenseTableRow
+          key={row.id}
+          data={row}
+          ref={data.length === index + 1 ? lastExpenseElementRef : null}
+        />
+      );
     });
   };
 
   return (
     <Table>
-      <TableHead>
+      <TableHead classname={styles.head}>
         <TableRow>
           <TableCell classname={styles.cell1}>Name</TableCell>
           <TableCell classname={styles.cell2}>Category</TableCell>
