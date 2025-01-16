@@ -53,7 +53,7 @@ const filterUniqueById = <T extends { id: number }>(list: T[]): T[] => {
   return Object.values(result);
 };
 
-const LIMIT_EXPENSES = 2;
+const LIMIT_EXPENSES = 10;
 
 const StoreProvider = ({ children }: { children: React.ReactNode }) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -90,16 +90,16 @@ const StoreProvider = ({ children }: { children: React.ReactNode }) => {
   );
 
   useEffect(() => {
-    if (!expenses.length) {
-      handleFetchExpenses({ fromDate, toDate });
-    }
-  }, [handleFetchExpenses, fromDate, toDate, expenses.length]);
-
-  useEffect(() => {
     if (hasMoreExpenses) {
       handleFetchExpenses({ fromDate, toDate });
     }
   }, [handleFetchExpenses, hasMoreExpenses, fromDate, toDate]);
+
+  const resetExpenseState = () => {
+    setExpenses([]);
+    setPage(0);
+    setHasMoreExpenses(true);
+  };
 
   const handleSetCurrentExpense = useCallback((data?: Expense) => {
     if (!data) {
@@ -126,8 +126,7 @@ const StoreProvider = ({ children }: { children: React.ReactNode }) => {
   const handleSetFromDate = useCallback(
     (date: string) => {
       setFromDate(date);
-      setExpenses([]);
-      handleFetchExpenses({ fromDate: date, toDate });
+      resetExpenseState();
     },
     [handleFetchExpenses, toDate],
   );
@@ -135,8 +134,7 @@ const StoreProvider = ({ children }: { children: React.ReactNode }) => {
   const handleSetToDate = useCallback(
     (date: string) => {
       setToDate(date);
-      setExpenses([]);
-      handleFetchExpenses({ fromDate, toDate: date });
+      resetExpenseState();
     },
     [handleFetchExpenses, fromDate],
   );

@@ -14,15 +14,19 @@
   width: 49px;
   height: 49px;
   margin-right: 15px;
+  display: inline-block;
 }
 
-.cell1 {
+.stub-head-container {
   display: flex;
   align-items: center;
 }
 
 .cell1 .stub-line {
+  flex: 1;
+  min-width: 0;
   max-width: 190px;
+  display: inline-block;
 }
 
 .cell2 .stub-line {
@@ -35,6 +39,26 @@
 
 .cell4 .stub-line {
   max-width: 75px;
+}
+
+@media (width <= 768px) {
+  .cell2,
+  .cell3,
+  .cell5 {
+    display: none;
+  }
+
+  .cell1 {
+    width: 60%;
+  }
+
+  .cell4 {
+    width: 40%;
+  }
+
+  .cell4 .stub-line {
+    margin-left: auto;
+  }
 }
 
 @keyframes shine {
