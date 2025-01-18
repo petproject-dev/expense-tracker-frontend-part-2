@@ -1,0 +1,19 @@
+.container {
+  display: block;
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  border: none;
+  padding: 20px 30px;
+  box-shadow: var(--box-shadow);
+}
+
+.text {
+  margin-bottom: 20px;
+}
+
+.buttons {
+  display: flex;
+  gap: 30px;
+}

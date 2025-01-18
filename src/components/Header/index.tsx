@@ -1,5 +1,5 @@
 import cn from 'classnames';
-import { FC } from 'react';
+import { FC, memo } from 'react';
 
 import { Logo } from '../Logo';
 import styles from './index.module.css';
@@ -9,7 +9,7 @@ interface IProps {
   classname?: string;
 }
 
-export const Header: FC<IProps> = ({ children, classname = '' }) => {
+export const Header: FC<IProps> = memo(({ children, classname = '' }) => {
   return (
     <header className={cn(styles.header, classname)}>
       <a href="/" className={styles.logo}>
@@ -18,4 +18,4 @@ export const Header: FC<IProps> = ({ children, classname = '' }) => {
       {children && <div className={styles.title}>{children}</div>}
     </header>
   );
-};
+});

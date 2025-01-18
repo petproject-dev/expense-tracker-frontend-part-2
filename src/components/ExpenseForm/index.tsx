@@ -5,7 +5,6 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import * as yup from 'yup';
 
 import { categoryList, currencyList } from '../../entities';
-import { useStore } from '../../store/storeContext';
 import { Button } from '../Button';
 import { CategoryGroup } from '../CategoryGroup';
 import { DatePicker } from '../DatePicker';
@@ -32,6 +31,7 @@ const schema = yup
 interface IProps {
   defaultValues?: Inputs;
   onClose: () => void;
+  onSubmit: (data: Inputs) => void;
 }
 
 const emptyData = {
@@ -42,7 +42,11 @@ const emptyData = {
   date: format(new Date(), 'yyyy-MM-dd'),
 };
 
-export const ExpenseForm: FC<IProps> = ({ onClose, defaultValues = emptyData }) => {
+export const ExpenseForm: FC<IProps> = ({
+  onClose,
+  onSubmit,
+  defaultValues = emptyData,
+}) => {
   const {
     register,
     handleSubmit,
@@ -53,16 +57,14 @@ export const ExpenseForm: FC<IProps> = ({ onClose, defaultValues = emptyData }) 
     resolver: yupResolver(schema),
   });
 
-  const { createExpense } = useStore();
-
-  const onSubmit: SubmitHandler<Inputs> = (data) => {
-    createExpense({ ...data, date: formatISO(startOfDay(new Date(data.date))) });
+  const handleOnSubmit: SubmitHandler<Inputs> = (data) => {
+    onSubmit({ ...data, date: formatISO(startOfDay(new Date(data.date))) });
     reset();
     onClose();
   };
 
   return (
-    <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
+    <form className={styles.form} onSubmit={handleSubmit(handleOnSubmit)}>
       <div className={styles.fields}>
         <div className={styles.field}>
           <InputLabel htmlFor="name">Name</InputLabel>

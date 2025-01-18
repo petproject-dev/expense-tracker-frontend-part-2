@@ -1,6 +1,7 @@
 import { FC, useEffect, useState } from 'react';
 
 import { useStore } from '../../store/storeContext';
+import { Expense } from '../../types';
 import { Header } from '../Header';
 import { Icon } from '../Icon';
 import { IconButton } from '../IconButton';
@@ -14,7 +15,8 @@ interface IProps {
 
 export const Layout: FC<IProps> = ({ children }) => {
   const [openSidebar, setOpenSidebar] = useState(false);
-  const { currentExpense, setCurrentExpense } = useStore();
+  const { currentExpense, editExpense, updateExpense, createExpense } =
+    useStore();
 
   useEffect(() => {
     if (currentExpense) {
@@ -24,11 +26,16 @@ export const Layout: FC<IProps> = ({ children }) => {
 
   useEffect(() => {
     if (!openSidebar) {
-      setCurrentExpense();
+      editExpense();
     }
-  }, [openSidebar, setCurrentExpense]);
+  }, [openSidebar, editExpense]);
+
+  const onSubmit = currentExpense
+    ? (data: Omit<Expense, 'id'>) => updateExpense(currentExpense.id, data)
+    : createExpense;
 
   let headerMobileMessage = 'Last payments';
+
   if (openSidebar) {
     if (currentExpense) {
       headerMobileMessage = 'Update payment';
@@ -40,20 +47,32 @@ export const Layout: FC<IProps> = ({ children }) => {
   return (
     <div className={styles.container}>
       <Header classname={styles.header}>{headerMobileMessage}</Header>
-      {openSidebar && (
-        <div onClick={() => setOpenSidebar(false)} className={styles['layout-background']} />
-      )}
-      <main className={styles.content}>
-        {children}
 
+      <div className={styles.content}>
+        <main>{children}</main>
         {openSidebar && (
           <Sidebar classname={styles['sidebar-container']}>
-            <ExpenseForm defaultValues={currentExpense} onClose={() => setOpenSidebar(false)} />
+            <ExpenseForm
+              defaultValues={currentExpense}
+              onClose={() => setOpenSidebar(false)}
+              onSubmit={onSubmit}
+            />
           </Sidebar>
         )}
-      </main>
+      </div>
 
-      <IconButton size="md" className={styles.button} onClick={() => setOpenSidebar(true)}>
+      {openSidebar && (
+        <div
+          onClick={() => setOpenSidebar(false)}
+          className={styles['layout-background']}
+        />
+      )}
+
+      <IconButton
+        size="md"
+        className={styles.button}
+        onClick={() => setOpenSidebar(true)}
+      >
         <Icon icon="plus" size={30} color="white" />
       </IconButton>
     </div>

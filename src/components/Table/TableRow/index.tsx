@@ -1,5 +1,5 @@
 import cn from 'classnames';
-import { FC, ForwardedRef, forwardRef, TableHTMLAttributes } from 'react';
+import { FC, ForwardedRef, memo, TableHTMLAttributes } from 'react';
 
 interface IProps extends TableHTMLAttributes<HTMLTableRowElement> {
   children?: React.ReactNode;
@@ -7,10 +7,12 @@ interface IProps extends TableHTMLAttributes<HTMLTableRowElement> {
   ref?: ForwardedRef<HTMLTableRowElement>;
 }
 
-export const TableRow: FC<IProps> = forwardRef(({ children, classname, ...props }, ref) => {
-  return (
-    <tr ref={ref} className={cn('row', classname)} {...props}>
-      {children}
-    </tr>
-  );
-});
+export const TableRow: FC<IProps> = memo(
+  ({ children, classname, ref, ...props }) => {
+    return (
+      <tr ref={ref} className={cn('row', classname)} {...props}>
+        {children}
+      </tr>
+    );
+  },
+);

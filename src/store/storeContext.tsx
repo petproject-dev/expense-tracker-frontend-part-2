@@ -1,7 +1,19 @@
 import { startOfDay, subDays, format } from 'date-fns';
-import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
 
-import { createExpense, deleteExpense, fetchExpenses, updateExpense } from '../api/expenses';
+import {
+  createExpense,
+  deleteExpense,
+  fetchExpenses,
+  updateExpense,
+} from '../api/expenses';
 import { Expense, IQueryExpenses } from '../types';
 
 interface ProviderProps {
@@ -12,13 +24,13 @@ interface ProviderProps {
   currentExpense?: Expense;
   hasMoreExpenses: boolean;
   setPage: React.Dispatch<React.SetStateAction<number>>;
-  setCurrentExpense: (data?: Expense) => void;
   createExpense: (data: Omit<Expense, 'id'>) => void;
   fetchExpenses: (queryParams: {
     fromDate: IQueryExpenses['fromDate'];
     toDate: IQueryExpenses['toDate'];
   }) => void;
-  updateExpense: (id: number, data: Partial<Expense>) => void;
+  updateExpense: (id: number, data: Omit<Expense, 'id'>) => void;
+  editExpense: (id?: number) => void;
   deleteExpense: (id: number) => void;
   setFromDate: (date: string) => void;
   setToDate: (date: string) => void;
@@ -32,11 +44,11 @@ const StoreContext = createContext<ProviderProps>({
   currentExpense: undefined,
   hasMoreExpenses: false,
   setPage: () => {},
-  setCurrentExpense: () => {},
   createExpense: () => {},
   fetchExpenses: () => {},
   updateExpense: () => {},
   deleteExpense: () => {},
+  editExpense: () => {},
   setFromDate: () => {},
   setToDate: () => {},
 });
@@ -105,18 +117,37 @@ const StoreProvider = ({ children }: { children: React.ReactNode }) => {
     if (!data) {
       return setCurrentExpense(undefined);
     }
-    setCurrentExpense({ ...data, date: format(new Date(data?.date), 'yyyy-MM-dd') });
+    setCurrentExpense({
+      ...data,
+      date: format(new Date(data?.date), 'yyyy-MM-dd'),
+    });
   }, []);
 
   const handleCreateExpense = useCallback(async (data: Omit<Expense, 'id'>) => {
     const newExpenseRecordId = await createExpense(data);
-    setExpenses((prev) => filterUniqueById([...prev, { id: newExpenseRecordId, ...data }]));
+    setExpenses((prev) =>
+      filterUniqueById([...prev, { id: newExpenseRecordId, ...data }]),
+    );
   }, []);
 
-  const handleUpdateExpense = useCallback(async (id: number, data: Partial<Expense>) => {
-    await updateExpense(id, data);
-    setExpenses((prev) => prev.map((x) => (x.id === id ? { ...x, ...data } : x)));
-  }, []);
+  const handleUpdateExpense = useCallback(
+    async (id: number, data: Omit<Expense, 'id'>) => {
+      await updateExpense(id, data);
+      setExpenses((prev) =>
+        prev.map((x) => (x.id === id ? { ...x, ...data } : x)),
+      );
+    },
+    [],
+  );
+
+  const handleEditExpense = useCallback(
+    async (id?: number) => {
+      const expense = expenses.find((expense) => expense.id === id);
+
+      handleSetCurrentExpense(expense);
+    },
+    [expenses, handleSetCurrentExpense],
+  );
 
   const handleDeleteExpense = useCallback(async (id: number) => {
     await deleteExpense(id);
@@ -146,11 +177,11 @@ const StoreProvider = ({ children }: { children: React.ReactNode }) => {
       currentExpense,
       hasMoreExpenses,
       setPage,
-      setCurrentExpense: handleSetCurrentExpense,
       createExpense: handleCreateExpense,
       fetchExpenses: handleFetchExpenses,
       updateExpense: handleUpdateExpense,
       deleteExpense: handleDeleteExpense,
+      editExpense: handleEditExpense,
       fromDate,
       toDate,
       setFromDate: handleSetFromDate,
@@ -167,12 +198,15 @@ const StoreProvider = ({ children }: { children: React.ReactNode }) => {
     handleFetchExpenses,
     handleUpdateExpense,
     handleDeleteExpense,
+    handleEditExpense,
     fromDate,
     toDate,
     handleSetFromDate,
     handleSetToDate,
   ]);
-  return <StoreContext.Provider value={store}>{children}</StoreContext.Provider>;
+  return (
+    <StoreContext.Provider value={store}>{children}</StoreContext.Provider>
+  );
 };
 
 export default StoreProvider;

@@ -1,32 +1,47 @@
-import { useCallback, useRef } from 'react';
+import { FC, useCallback, useRef } from 'react';
 
 import styles from './index.module.css';
 import { Table, TableBody, TableCell, TableHead, TableRow } from '../Table';
 import { EmptyTable } from './EmptyTable';
 import { ExpenseTableRow } from './ExpenseTableRow';
 import { TableStub } from './TableStub';
-import { useStore } from '../../store/storeContext';
+import { Expense } from '../../types';
 import { Loader } from '../Loader';
 
-export const ExpenseTable = () => {
-  const { expenses: data, isLoading, setPage, hasMoreExpenses } = useStore();
+interface IProps<T> {
+  data: T[];
+  isLoading: boolean;
+  hasMore: boolean;
+  setPage: React.Dispatch<React.SetStateAction<number>>;
+  onEdit: (id: number) => void;
+  onDelete: (id: number) => void;
+}
+
+export const ExpenseTable: FC<IProps<Expense>> = ({
+  data,
+  isLoading,
+  setPage,
+  hasMore,
+  onEdit,
+  onDelete,
+}) => {
   const observer = useRef<IntersectionObserver | null>(null);
 
   const lastExpenseElementRef = useCallback(
     (node: HTMLTableRowElement | null) => {
-      if (isLoading || !hasMoreExpenses) return;
+      if (isLoading || !hasMore) return;
 
       if (observer.current) observer.current.disconnect();
 
       observer.current = new IntersectionObserver((entries) => {
-        if (entries[0].isIntersecting && hasMoreExpenses) {
+        if (entries[0].isIntersecting && hasMore) {
           setPage((prevPage) => prevPage + 1);
         }
       });
 
       if (node) observer.current.observe(node);
     },
-    [isLoading, hasMoreExpenses, setPage],
+    [isLoading, hasMore, setPage],
   );
 
   const renderBody = () => {
@@ -43,6 +58,8 @@ export const ExpenseTable = () => {
         <ExpenseTableRow
           key={row.id}
           data={row}
+          onDelete={onDelete}
+          onEdit={onEdit}
           ref={data.length === index + 1 ? lastExpenseElementRef : null}
         />
       );
@@ -53,11 +70,19 @@ export const ExpenseTable = () => {
     <Table>
       <TableHead classname={styles.head}>
         <TableRow>
-          <TableCell classname={styles.cell1}>Name</TableCell>
-          <TableCell classname={styles.cell2}>Category</TableCell>
-          <TableCell classname={styles.cell3}>Date</TableCell>
-          <TableCell classname={styles.cell4}>Total</TableCell>
-          <TableCell classname={styles.cell5} />
+          <TableCell head classname={styles.cell1}>
+            Name
+          </TableCell>
+          <TableCell head classname={styles.cell2}>
+            Category
+          </TableCell>
+          <TableCell head classname={styles.cell3}>
+            Date
+          </TableCell>
+          <TableCell head classname={styles.cell4}>
+            Total
+          </TableCell>
+          <TableCell head classname={styles.cell5} />
         </TableRow>
       </TableHead>
       <TableBody classname={styles.body}>

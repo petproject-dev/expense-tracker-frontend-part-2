@@ -1,4 +1,4 @@
-import { FC, useState } from 'react';
+import { FC, memo, useState } from 'react';
 
 import { IProps as IInputProps } from '../Input';
 import styles from './index.module.css';
@@ -12,7 +12,7 @@ interface IProps extends Omit<IInputProps, 'onChange'> {
   onChange: (from: string, to: string) => void;
 }
 
-export const DatePickerRange: FC<IProps> = ({ from, to, onChange }) => {
+export const DatePickerRange: FC<IProps> = memo(({ from, to, onChange }) => {
   const [openFrom, setOpenFrom] = useState(false);
   const [openTo, setOpenTo] = useState(false);
 
@@ -44,23 +44,43 @@ export const DatePickerRange: FC<IProps> = ({ from, to, onChange }) => {
         <span className={styles.icon}>
           <Icon icon="calendar" color="white" size={30} />
         </span>
-        <span className={styles.date} onClick={() => setOpenFrom((prev) => !prev)}>
+        <span
+          className={styles.date}
+          onClick={() => setOpenFrom((prev) => !prev)}
+        >
           {valueFrom}
         </span>
         {'\u00A0'}-{'\u00A0'}
-        <span className={styles.date} onClick={() => setOpenTo((prev) => !prev)}>
+        <span
+          className={styles.date}
+          onClick={() => setOpenTo((prev) => !prev)}
+        >
           {valueTo}
         </span>
       </span>
       {valueFrom > valueTo && (
-        <div className={styles.error}>The start date cannot be later than the end date</div>
+        <div className={styles.error}>
+          The start date cannot be later than the end date
+        </div>
       )}
       {(openFrom || openTo) && (
         <div className={styles['date-picker']}>
-          {openFrom && <DatePicker value={valueFrom} name="fromDate" onChange={handleChangeFrom} />}
-          {openTo && <DatePicker value={valueTo} name="toDate" onChange={handleChangeTo} />}
+          {openFrom && (
+            <DatePicker
+              value={valueFrom}
+              name="fromDate"
+              onChange={handleChangeFrom}
+            />
+          )}
+          {openTo && (
+            <DatePicker
+              value={valueTo}
+              name="toDate"
+              onChange={handleChangeTo}
+            />
+          )}
         </div>
       )}
     </div>
   );
-};
+});

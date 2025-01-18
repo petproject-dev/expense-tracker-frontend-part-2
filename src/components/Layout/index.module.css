@@ -43,9 +43,15 @@
     position: relative;
   }
 
-  .content {
-    padding: 0 0 30px;
+  .container {
     background-color: var(--primary-1);
+    padding-bottom: 20px;
+  }
+
+  .content {
+    background-color: var(--neutral);
+    border-radius: var(--border-radius);
+    padding: 14px 24px 24px;
   }
 
   .button {
