@@ -11,6 +11,7 @@
   z-index: 15;
   border-radius: var(--border-radius);
   animation: slice-down 0.3s ease;
+  min-width: 280px;
 }
 
 @keyframes slice-down {

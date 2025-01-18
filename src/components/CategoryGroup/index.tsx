@@ -1,10 +1,11 @@
 import { FC, InputHTMLAttributes } from 'react';
 
-import { categoryList } from '../../entities';
+import { categoriesMap, categoryList } from '../../entities';
 import { HelperText } from '../HelperText';
 import { Icon } from '../Icon';
 import { IconRadio } from '../IconRadio';
 import styles from './index.module.css';
+import { Tooltip } from '../Tooltip';
 
 interface IProps extends InputHTMLAttributes<HTMLInputElement> {
   helperText?: string;
@@ -20,9 +21,11 @@ export const CategoryGroup: FC<IProps> = ({
     <>
       <div className={styles.items}>
         {categoryList.map((icon) => (
-          <IconRadio key={icon} value={icon} {...props}>
-            <Icon icon={icon} size={24} />
-          </IconRadio>
+          <Tooltip title={categoriesMap[icon]}>
+            <IconRadio key={icon} value={icon} {...props}>
+              <Icon icon={icon} size={24} />
+            </IconRadio>
+          </Tooltip>
         ))}
       </div>
       {helperText && <HelperText error={error}>{helperText}</HelperText>}

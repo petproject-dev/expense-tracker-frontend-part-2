@@ -4,5 +4,5 @@
 }
 
 input:checked + .icon-container .icon {
-  fill: var(--error);
+  fill: var(--primary-1);
 }
