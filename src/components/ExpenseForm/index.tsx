@@ -1,10 +1,11 @@
 import { yupResolver } from '@hookform/resolvers/yup';
-import { format, formatISO, startOfDay } from 'date-fns';
+import { formatISO, startOfDay } from 'date-fns';
 import { FC } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import * as yup from 'yup';
 
 import { categoryList, currencyList } from '../../entities';
+import { Expense } from '../../types';
 import { Button } from '../Button';
 import { CategoryGroup } from '../CategoryGroup';
 import { DatePicker } from '../DatePicker';
@@ -14,7 +15,7 @@ import { Input } from '../Input';
 import { InputLabel } from '../InputLabel';
 import { InputWithCurrency } from '../InputWithCurrency';
 import styles from './index.module.css';
-import { Expense } from '../../types';
+import { useClickEscape } from '../../hooks/useClickEscape';
 
 interface Inputs extends Omit<Expense, 'id'> {}
 
@@ -39,7 +40,7 @@ const emptyData = {
   amount: undefined,
   category: undefined,
   currency: undefined,
-  date: format(new Date(), 'yyyy-MM-dd'),
+  date: undefined,
 };
 
 export const ExpenseForm: FC<IProps> = ({
@@ -57,6 +58,8 @@ export const ExpenseForm: FC<IProps> = ({
     resolver: yupResolver(schema),
   });
 
+  useClickEscape(onClose);
+
   const handleOnSubmit: SubmitHandler<Inputs> = (data) => {
     onSubmit({ ...data, date: formatISO(startOfDay(new Date(data.date))) });
     reset();
@@ -73,6 +76,7 @@ export const ExpenseForm: FC<IProps> = ({
             {...register('name')}
             error={!!errors.name}
             helperText={errors?.name?.message}
+            autoFocus
           />
         </div>
         <div className={styles.field}>
@@ -95,7 +99,7 @@ export const ExpenseForm: FC<IProps> = ({
           />
         </div>
         <div className={styles.field}>
-          <InputLabel htmlFor="date">Select category</InputLabel>
+          <InputLabel htmlFor="date">Select date</InputLabel>
           <DatePicker
             id="date"
             {...register('date')}

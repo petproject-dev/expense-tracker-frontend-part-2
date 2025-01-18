@@ -4,7 +4,7 @@ import { useStore } from '../../store/storeContext';
 import { DatePickerRange } from '../DatePickerRange';
 import { ExpenseTable } from '../ExpenseTable';
 import { Layout } from '../Layout';
-import { DeleteExpenseModal } from '../modals/DeleteExpenseModal';
+import { ConfirmModal } from '../modals/ConfirmModal';
 
 function App() {
   const {
@@ -53,11 +53,13 @@ function App() {
         onDelete={setDeleteExpenseId}
       />
 
-      <DeleteExpenseModal
+      <ConfirmModal
         onClose={closeModal}
         onConfirm={confirmDelete}
         open={deleteExpenseId !== null}
-      />
+      >
+        Are you sure you want to delete this expense?
+      </ConfirmModal>
     </Layout>
   );
 }

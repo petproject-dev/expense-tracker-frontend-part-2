@@ -1,10 +1,10 @@
 import { FC, InputHTMLAttributes } from 'react';
 
+import { categoryList } from '../../entities';
+import { HelperText } from '../HelperText';
 import { Icon } from '../Icon';
 import { IconRadio } from '../IconRadio';
 import styles from './index.module.css';
-import { categoryList } from '../../entities';
-import { HelperText } from '../HelperText';
 
 interface IProps extends InputHTMLAttributes<HTMLInputElement> {
   helperText?: string;

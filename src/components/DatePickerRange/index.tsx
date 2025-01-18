@@ -1,10 +1,12 @@
 import { FC, memo, useState } from 'react';
 
-import { IProps as IInputProps } from '../Input';
-import styles from './index.module.css';
 import { useOutsideClick } from '../../hooks/useOutsideClick';
+import { Button } from '../Button';
 import { DatePicker } from '../DatePicker';
 import { Icon } from '../Icon';
+import { IProps as IInputProps } from '../Input';
+import { InputLabel } from '../InputLabel';
+import styles from './index.module.css';
 
 interface IProps extends Omit<IInputProps, 'onChange'> {
   from: string;
@@ -19,23 +21,32 @@ export const DatePickerRange: FC<IProps> = memo(({ from, to, onChange }) => {
   const [valueFrom, setValueFrom] = useState(from);
   const [valueTo, setValueTo] = useState(to);
 
-  const ref = useOutsideClick(() => {
+  const closePickers = () => {
     setOpenFrom(false);
     setOpenTo(false);
-  });
+  };
+
+  const ref = useOutsideClick(closePickers);
+
+  const cancelChanges = () => {
+    setValueFrom(from);
+    setValueTo(to);
+    closePickers();
+  };
+
+  const saveChanges = () => {
+    onChange(valueFrom, valueTo);
+    closePickers();
+  };
 
   const handleChangeFrom = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newFrom = e.target.value;
     setValueFrom(newFrom);
-    setOpenFrom(false);
-    onChange(newFrom, valueTo);
   };
 
   const handleChangeTo = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newTo = e.target.value;
     setValueTo(newTo);
-    setOpenTo(false);
-    onChange(valueFrom, newTo);
   };
 
   return (
@@ -66,19 +77,29 @@ export const DatePickerRange: FC<IProps> = memo(({ from, to, onChange }) => {
       {(openFrom || openTo) && (
         <div className={styles['date-picker']}>
           {openFrom && (
-            <DatePicker
-              value={valueFrom}
-              name="fromDate"
-              onChange={handleChangeFrom}
-            />
+            <InputLabel>
+              From
+              <DatePicker
+                value={valueFrom}
+                name="fromDate"
+                onBlur={handleChangeFrom}
+              />
+            </InputLabel>
           )}
           {openTo && (
-            <DatePicker
-              value={valueTo}
-              name="toDate"
-              onChange={handleChangeTo}
-            />
+            <InputLabel>
+              To
+              <DatePicker
+                value={valueTo}
+                name="toDate"
+                onBlur={handleChangeTo}
+              />
+            </InputLabel>
           )}
+          <div className={styles.buttons}>
+            <Button onClick={cancelChanges}>Cancel</Button>
+            <Button onClick={saveChanges}>Save</Button>
+          </div>
         </div>
       )}
     </div>

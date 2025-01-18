@@ -107,11 +107,11 @@ const StoreProvider = ({ children }: { children: React.ReactNode }) => {
     }
   }, [handleFetchExpenses, hasMoreExpenses, fromDate, toDate]);
 
-  const resetExpenseState = () => {
+  const resetExpenseState = useCallback(() => {
     setExpenses([]);
     setPage(0);
     setHasMoreExpenses(true);
-  };
+  }, []);
 
   const handleSetCurrentExpense = useCallback((data?: Expense) => {
     if (!data) {
@@ -159,7 +159,7 @@ const StoreProvider = ({ children }: { children: React.ReactNode }) => {
       setFromDate(date);
       resetExpenseState();
     },
-    [handleFetchExpenses, toDate],
+    [resetExpenseState],
   );
 
   const handleSetToDate = useCallback(
@@ -167,7 +167,7 @@ const StoreProvider = ({ children }: { children: React.ReactNode }) => {
       setToDate(date);
       resetExpenseState();
     },
-    [handleFetchExpenses, fromDate],
+    [resetExpenseState],
   );
 
   const store = useMemo(() => {
@@ -193,7 +193,6 @@ const StoreProvider = ({ children }: { children: React.ReactNode }) => {
     currentExpense,
     hasMoreExpenses,
     setPage,
-    handleSetCurrentExpense,
     handleCreateExpense,
     handleFetchExpenses,
     handleUpdateExpense,

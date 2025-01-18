@@ -1,11 +1,11 @@
 import { FC } from 'react';
 
 import styles from './index.module.css';
-import { Icon as IconType } from '../../../types';
+import { Category } from '../../../types';
 import { Icon } from '../../Icon';
 
 interface IProps {
-  category: IconType;
+  category: Category;
 }
 
 export const IconCategory: FC<IProps> = ({ category }) => {

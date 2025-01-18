@@ -1,12 +1,12 @@
 import { FC, useCallback, useRef } from 'react';
 
-import styles from './index.module.css';
 import { Table, TableBody, TableCell, TableHead, TableRow } from '../Table';
 import { EmptyTable } from './EmptyTable';
 import { ExpenseTableRow } from './ExpenseTableRow';
 import { TableStub } from './TableStub';
 import { Expense } from '../../types';
 import { Loader } from '../Loader';
+import styles from './index.module.css';
 
 interface IProps<T> {
   data: T[];

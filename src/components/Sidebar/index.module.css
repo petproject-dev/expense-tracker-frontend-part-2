@@ -8,6 +8,7 @@
   right: 0;
   z-index: 10;
   overflow-y: auto;
+  animation: slice-right 0.3s ease;
 }
 
 @media (width <= 768px) {
@@ -18,5 +19,15 @@
     top: 0;
     height: auto;
     flex: 1;
+  }
+}
+
+@keyframes slice-right {
+  0% {
+    transform: translateX(100%);
+  }
+
+  100% {
+    transform: translateX(0%);
   }
 }

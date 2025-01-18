@@ -7,9 +7,9 @@
   right: 2px;
   top: 2px;
   bottom: 2px;
-  border: none;
+  border: none !important;
   z-index: 1;
-  border-radius: var(--border-radius);
-  width: 90px;
+  width: 90px !important;
   text-align: center;
+  height: auto !important;
 }

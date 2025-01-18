@@ -2,13 +2,14 @@ import cn from 'classnames';
 import { format } from 'date-fns';
 import { FC, ForwardedRef, memo } from 'react';
 
+import styles from './index.module.css';
+import { categoriesMap } from '../../../entities';
+import { Expense } from '../../../types';
 import { Menu, MenuItem } from '../../Menu';
 import { TableCell, TableRow } from '../../Table';
 import { IconCategory } from '../IconCategory';
 import cellStyles from '../index.module.css';
 import { TotalAmount } from '../TotalAmount';
-import styles from './index.module.css';
-import { Expense } from '../../../types';
 
 interface IProps<T> {
   data: T;
@@ -28,12 +29,14 @@ export const ExpenseTableRow: FC<IProps<Expense>> = memo(
             </div>
             <div className={styles['mobile-name-container']}>
               {data.name}
-              <div className={styles['mobile-category']}>{data.category}</div>
+              <div className={styles['mobile-category']}>
+                {categoriesMap[data.category]}
+              </div>
             </div>
           </div>
         </TableCell>
         <TableCell classname={cn(cellStyles.cell2, styles.cell2)}>
-          {data.category}
+          {categoriesMap[data.category]}
         </TableCell>
         <TableCell classname={cn(cellStyles.cell3, styles.cell3)}>
           {format(data.date, 'yyyy-MM-dd')}

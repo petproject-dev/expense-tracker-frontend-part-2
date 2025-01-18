@@ -1,34 +1,41 @@
-import { FC, useEffect, useState } from 'react';
+import { FC, useCallback, useEffect, useState } from 'react';
 
 import { useStore } from '../../store/storeContext';
 import { Expense } from '../../types';
+import { ExpenseForm } from '../ExpenseForm';
 import { Header } from '../Header';
 import { Icon } from '../Icon';
 import { IconButton } from '../IconButton';
+import { LayoutBackground } from '../LayoutBackground';
 import { Sidebar } from '../Sidebar';
 import styles from './index.module.css';
-import { ExpenseForm } from '../ExpenseForm';
 
 interface IProps {
   children: React.ReactNode;
 }
 
 export const Layout: FC<IProps> = ({ children }) => {
-  const [openSidebar, setOpenSidebar] = useState(false);
+  const [isOpenSidebar, setIsOpenSidebar] = useState(false);
   const { currentExpense, editExpense, updateExpense, createExpense } =
     useStore();
 
-  useEffect(() => {
-    if (currentExpense) {
-      setOpenSidebar(true);
-    }
-  }, [currentExpense, setOpenSidebar]);
+  const openSidebar = useCallback(() => {
+    setIsOpenSidebar(true);
+  }, []);
+
+  const closeSidebar = useCallback(() => {
+    setIsOpenSidebar(false);
+  }, []);
 
   useEffect(() => {
-    if (!openSidebar) {
+    if (currentExpense) openSidebar();
+  }, [currentExpense, openSidebar]);
+
+  useEffect(() => {
+    if (!isOpenSidebar) {
       editExpense();
     }
-  }, [openSidebar, editExpense]);
+  }, [isOpenSidebar, editExpense]);
 
   const onSubmit = currentExpense
     ? (data: Omit<Expense, 'id'>) => updateExpense(currentExpense.id, data)
@@ -36,7 +43,7 @@ export const Layout: FC<IProps> = ({ children }) => {
 
   let headerMobileMessage = 'Last payments';
 
-  if (openSidebar) {
+  if (isOpenSidebar) {
     if (currentExpense) {
       headerMobileMessage = 'Update payment';
     } else {
@@ -50,29 +57,18 @@ export const Layout: FC<IProps> = ({ children }) => {
 
       <div className={styles.content}>
         <main>{children}</main>
-        {openSidebar && (
-          <Sidebar classname={styles['sidebar-container']}>
-            <ExpenseForm
-              defaultValues={currentExpense}
-              onClose={() => setOpenSidebar(false)}
-              onSubmit={onSubmit}
-            />
-          </Sidebar>
-        )}
+        <Sidebar open={isOpenSidebar} classname={styles['sidebar-container']}>
+          <ExpenseForm
+            defaultValues={currentExpense}
+            onClose={closeSidebar}
+            onSubmit={onSubmit}
+          />
+        </Sidebar>
       </div>
 
-      {openSidebar && (
-        <div
-          onClick={() => setOpenSidebar(false)}
-          className={styles['layout-background']}
-        />
-      )}
+      <LayoutBackground open={isOpenSidebar} onClose={closeSidebar} />
 
-      <IconButton
-        size="md"
-        className={styles.button}
-        onClick={() => setOpenSidebar(true)}
-      >
+      <IconButton size="md" className={styles.button} onClick={openSidebar}>
         <Icon icon="plus" size={30} color="white" />
       </IconButton>
     </div>

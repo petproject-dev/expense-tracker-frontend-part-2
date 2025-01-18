@@ -8,7 +8,6 @@ export interface IProps extends InputHTMLAttributes<HTMLInputElement> {
   error?: boolean;
   helperText?: string;
   className?: string;
-  dropdownComponent?: React.ReactNode;
 }
 
 export const Input: FC<IProps> = ({
@@ -17,7 +16,7 @@ export const Input: FC<IProps> = ({
   defaultValue = '',
   onChange,
   className,
-  dropdownComponent,
+  children,
   ...props
 }) => {
   const [value, setValue] = useState(defaultValue);
@@ -38,10 +37,10 @@ export const Input: FC<IProps> = ({
           value={value}
           className={cn(styles.input, className, {
             [styles['input-error']]: error,
-            [styles['input-dropdown-component']]: !!dropdownComponent,
+            [styles['with-children']]: !!children,
           })}
         />
-        {dropdownComponent}
+        {children}
       </span>
       {helperText && <HelperText error={error}>{helperText}</HelperText>}
     </div>

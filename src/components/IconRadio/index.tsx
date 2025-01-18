@@ -6,7 +6,7 @@ interface IProps extends InputHTMLAttributes<HTMLInputElement> {}
 
 export const IconRadio: FC<IProps> = ({ children, ...props }) => {
   return (
-    <label className={styles.container}>
+    <label className={styles.container} tabIndex={0}>
       <input type="radio" hidden {...props} />
       {children}
     </label>

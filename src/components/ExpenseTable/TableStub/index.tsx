@@ -1,9 +1,9 @@
 import cn from 'classnames';
 
-import styles from './index.module.css';
 import { Icon } from '../../Icon';
 import { TableCell, TableRow } from '../../Table';
 import cellStyles from '../index.module.css';
+import styles from './index.module.css';
 
 export const TableStub = () => {
   const stubs = Array(10).fill(0);
