@@ -40,6 +40,10 @@
     padding-left: 12px;
   }
 
+  .cell5 button {
+    opacity: 0;
+  }
+
   .mobile-cell1-container {
     gap: 12px;
   }

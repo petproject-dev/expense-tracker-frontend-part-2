@@ -7,6 +7,7 @@ import { Icon } from '../Icon';
 import { IProps as IInputProps } from '../Input';
 import { InputLabel } from '../InputLabel';
 import styles from './index.module.css';
+import { useClickEscape } from '../../hooks/useClickEscape';
 
 interface IProps extends Omit<IInputProps, 'onChange'> {
   from: string;
@@ -25,6 +26,8 @@ export const DatePickerRange: FC<IProps> = memo(({ from, to, onChange }) => {
     setOpenFrom(false);
     setOpenTo(false);
   };
+
+  useClickEscape(closePickers);
 
   const ref = useOutsideClick(closePickers);
 

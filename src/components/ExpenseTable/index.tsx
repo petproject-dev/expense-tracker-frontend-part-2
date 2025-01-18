@@ -15,6 +15,7 @@ interface IProps<T> {
   setPage: React.Dispatch<React.SetStateAction<number>>;
   onEdit: (id: number) => void;
   onDelete: (id: number) => void;
+  onMobileClick: (id: number) => void;
 }
 
 export const ExpenseTable: FC<IProps<Expense>> = ({
@@ -24,6 +25,7 @@ export const ExpenseTable: FC<IProps<Expense>> = ({
   hasMore,
   onEdit,
   onDelete,
+  onMobileClick,
 }) => {
   const observer = useRef<IntersectionObserver | null>(null);
 
@@ -60,6 +62,7 @@ export const ExpenseTable: FC<IProps<Expense>> = ({
           data={row}
           onDelete={onDelete}
           onEdit={onEdit}
+          onMobileClick={onMobileClick}
           ref={data.length === index + 1 ? lastExpenseElementRef : null}
         />
       );

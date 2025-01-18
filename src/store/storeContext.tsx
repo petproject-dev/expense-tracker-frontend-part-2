@@ -143,7 +143,6 @@ const StoreProvider = ({ children }: { children: React.ReactNode }) => {
   const handleEditExpense = useCallback(
     async (id?: number) => {
       const expense = expenses.find((expense) => expense.id === id);
-
       handleSetCurrentExpense(expense);
     },
     [expenses, handleSetCurrentExpense],

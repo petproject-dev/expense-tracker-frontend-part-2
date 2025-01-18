@@ -16,12 +16,17 @@ interface IProps<T> {
   ref: ForwardedRef<HTMLTableRowElement>;
   onEdit: (id: number) => void;
   onDelete: (id: number) => void;
+  onMobileClick: (id: number) => void;
 }
 
 export const ExpenseTableRow: FC<IProps<Expense>> = memo(
-  ({ data, onEdit, onDelete, ref }) => {
+  ({ data, onEdit, onDelete, onMobileClick, ref }) => {
     return (
-      <TableRow classname={styles.row} ref={ref}>
+      <TableRow
+        classname={styles.row}
+        ref={ref}
+        onClick={() => onMobileClick(data.id)}
+      >
         <TableCell classname={cn(cellStyles.cell1, styles.cell1)}>
           <div className={styles['mobile-cell1-container']}>
             <div className={styles['category-icon']}>

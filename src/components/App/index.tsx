@@ -5,6 +5,7 @@ import { DatePickerRange } from '../DatePickerRange';
 import { ExpenseTable } from '../ExpenseTable';
 import { Layout } from '../Layout';
 import { ConfirmModal } from '../modals/ConfirmModal';
+import { MobileMenuModal } from '../modals/MobileMenuModal';
 
 function App() {
   const {
@@ -29,11 +30,21 @@ function App() {
   );
 
   const [deleteExpenseId, setDeleteExpenseId] = useState<number | null>(null);
+  const [mobileExpenseId, setMobileExpenseId] = useState<number | null>(null);
 
   const closeModal = () => setDeleteExpenseId(null);
+
   const confirmDelete = () => {
     deleteExpense(deleteExpenseId as number);
     closeModal();
+  };
+
+  const onMobileClick = (id: number) => {
+    const MOBILE_WIDTH = 768;
+
+    if (window.outerWidth <= MOBILE_WIDTH) {
+      setMobileExpenseId(id);
+    }
   };
 
   return (
@@ -51,6 +62,7 @@ function App() {
         hasMore={hasMoreExpenses}
         onEdit={editExpense}
         onDelete={setDeleteExpenseId}
+        onMobileClick={onMobileClick}
       />
 
       <ConfirmModal
@@ -60,6 +72,13 @@ function App() {
       >
         Are you sure you want to delete this expense?
       </ConfirmModal>
+
+      <MobileMenuModal
+        onEdit={() => editExpense(mobileExpenseId as number)}
+        onDelete={() => setDeleteExpenseId(mobileExpenseId)}
+        onClose={() => setMobileExpenseId(null)}
+        open={mobileExpenseId !== null}
+      />
     </Layout>
   );
 }

@@ -19,12 +19,23 @@
     top: 0;
     height: auto;
     flex: 1;
+    animation: slice-up 0.3s ease;
   }
 }
 
 @keyframes slice-right {
   0% {
     transform: translateX(100%);
+  }
+
+  100% {
+    transform: translateX(0%);
+  }
+}
+
+@keyframes slice-up {
+  0% {
+    transform: translateY(50%);
   }
 
   100% {
