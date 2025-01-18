@@ -20,7 +20,12 @@ const Dropdown: FC<IDropdownProps> = ({ defaultValue, onChange, ...props }) => {
   };
 
   return (
-    <select className={styles.select} value={value} onChange={handleChangeCurrency} {...props}>
+    <select
+      className={styles.select}
+      value={value}
+      onChange={handleChangeCurrency}
+      {...props}
+    >
       <option>USD</option>
       <option>EUR</option>
     </select>
@@ -30,7 +35,11 @@ const Dropdown: FC<IDropdownProps> = ({ defaultValue, onChange, ...props }) => {
 export const InputWithCurrency: FC<IProps> = ({ selectProps, ...props }) => {
   return (
     <div className={styles.container}>
-      <Input {...props} type="number" dropdownComponent={<Dropdown {...selectProps} />} />
+      <Input
+        {...props}
+        type="number"
+        dropdownComponent={<Dropdown {...selectProps} />}
+      />
     </div>
   );
 };

@@ -16,7 +16,13 @@ const colorMapper = {
   white: '#fff',
 };
 
-export const Icon: FC<IProps> = ({ icon, size = 24, className, color = 'grey', ...props }) => {
+export const Icon: FC<IProps> = ({
+  icon,
+  size = 24,
+  className,
+  color = 'grey',
+  ...props
+}) => {
   const fillColor = colorMapper[color];
 
   return (

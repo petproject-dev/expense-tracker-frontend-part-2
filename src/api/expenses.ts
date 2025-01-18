@@ -11,7 +11,12 @@ export const createExpense = async (data: Omit<Expense, 'id'>) => {
   return res.data;
 };
 
-export const fetchExpenses = async ({ fromDate, toDate, limit, offset }: IQueryExpenses) => {
+export const fetchExpenses = async ({
+  fromDate,
+  toDate,
+  limit,
+  offset,
+}: IQueryExpenses) => {
   const res = await request.get<Expense[]>(`/expenses`, {
     params: {
       fromDate,

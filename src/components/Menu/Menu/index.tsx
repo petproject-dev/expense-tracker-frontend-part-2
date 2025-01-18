@@ -22,10 +22,15 @@ export const Menu: FC<IProps> = ({ children }) => {
 
   return (
     <div ref={ref} className={styles.container}>
-      <IconButton onClick={() => setOpen((prev) => !prev)} btnType="transparent">
+      <IconButton
+        onClick={() => setOpen((prev) => !prev)}
+        btnType="transparent"
+      >
         <Icon icon="menu" />
       </IconButton>
-      {open && <ul className={styles.menu}>{children({ onClose: handleClose })}</ul>}
+      {open && (
+        <ul className={styles.menu}>{children({ onClose: handleClose })}</ul>
+      )}
     </div>
   );
 };

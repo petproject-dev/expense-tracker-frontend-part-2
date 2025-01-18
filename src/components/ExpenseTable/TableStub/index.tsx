@@ -11,7 +11,10 @@ export const TableStub = () => {
     <>
       {stubs.map((_, idx) => (
         <TableRow key={idx} classname={styles.row}>
-          <TableCell valign="middle" classname={cn(cellStyles.cell1, styles.cell1)}>
+          <TableCell
+            valign="middle"
+            classname={cn(cellStyles.cell1, styles.cell1)}
+          >
             <div className={styles['stub-head-container']}>
               <div className={styles['stub-square']} />
               <div className={styles['stub-line']} />

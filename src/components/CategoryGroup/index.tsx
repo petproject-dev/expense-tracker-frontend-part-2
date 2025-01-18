@@ -11,7 +11,11 @@ interface IProps extends InputHTMLAttributes<HTMLInputElement> {
   error?: boolean;
 }
 
-export const CategoryGroup: FC<IProps> = ({ helperText = '', error = false, ...props }) => {
+export const CategoryGroup: FC<IProps> = ({
+  helperText = '',
+  error = false,
+  ...props
+}) => {
   return (
     <>
       <div className={styles.items}>
