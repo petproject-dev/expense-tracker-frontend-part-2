@@ -21,8 +21,8 @@ export const CategoryGroup: FC<IProps> = ({
     <>
       <div className={styles.items}>
         {categoryList.map((icon) => (
-          <Tooltip title={categoriesMap[icon]}>
-            <IconRadio key={icon} value={icon} {...props}>
+          <Tooltip key={icon} title={categoriesMap[icon]}>
+            <IconRadio value={icon} {...props}>
               <Icon icon={icon} size={24} />
             </IconRadio>
           </Tooltip>
